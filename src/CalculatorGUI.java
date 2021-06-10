@@ -126,10 +126,10 @@ public class CalculatorGUI {
 
         public void actionPerformed(ActionEvent event) {
             newEntry = true; // 标记表达式已经计算完成
-            System.out.println(cnt);
-            if (evaluate.checkInput(input, cnt)) { // 表达式合法
-                button = event.getActionCommand(); // 实际上这里的button一定是 " = "
-                result = evaluate.readInput(input, cnt); // result为答案
+            // System.out.println(cnt);
+            button = event.getActionCommand();  // button可能是=，~,#
+            if (evaluate.checkInput(input, button, cnt)) { // 表达式合法
+                result = evaluate.readInput(input, button, cnt); // result为答案
                 // 第二行显示框显示标志位
                 // AF, CF, OF, PF, SF, ZF;
                 String flags = "A: " + AF + "    C: " + CF + "    O: " + OF + "    P: " + PF + "    S: " + SF

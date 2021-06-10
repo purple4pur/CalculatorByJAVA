@@ -9,7 +9,8 @@ public class Calculator {
         return exception;
     }
     
-    public boolean checkInput (String in, int cnt){
+    // in为输入的表达式，button可能是=,~,#，cnt表示字长位数
+    public boolean checkInput (String in, String button, int cnt){
         int open = 0;
         int closed = 0;
         int opCount = 0;
@@ -49,8 +50,8 @@ public class Calculator {
        }return valid;
     }
     
-    // 计算表达式返回结果
-	public double readInput (String exp, int cnt){
+     // exp为输入的表达式，button可能是=,~,#，cnt表示字长位数
+	public double readInput (String exp, String button, int cnt){
         Scanner input = new Scanner(exp);  // 获得需要计算的表达式字符串
 		Stack<Double> num = new Stack<Double>();
 		Stack<String> op = new Stack<String>();
