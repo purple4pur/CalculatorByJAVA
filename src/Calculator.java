@@ -9,7 +9,7 @@ public class Calculator {
         return exception;
     }
     
-    public boolean checkInput (String in){
+    public boolean checkInput (String in, int cnt){
         int open = 0;
         int closed = 0;
         int opCount = 0;
@@ -50,7 +50,7 @@ public class Calculator {
     }
     
     // 计算表达式返回结果
-	public double readInput (String exp){
+	public double readInput (String exp, int cnt){
         Scanner input = new Scanner(exp);  // 获得需要计算的表达式字符串
 		Stack<Double> num = new Stack<Double>();
 		Stack<String> op = new Stack<String>();

@@ -16,6 +16,7 @@ public class CalculatorGUI {
     private double result;
     private int AF, CF, OF, PF, SF, ZF; // 状态标志位
     DecimalFormat formater = new DecimalFormat("0.##########");
+    private int cnt = 8;  // 字长位数
 
     public static void main(String[] args) {
         CalculatorGUI gui = new CalculatorGUI();
@@ -38,6 +39,17 @@ public class CalculatorGUI {
         JLabel label = new JLabel("字长选择");
         choicePane.add(label);
         choicePane.add(comboBox);
+
+        // 添加选中状态改变的监听器
+        comboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                // 只处理选中的状态
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    cnt = (int)comboBox.getSelectedItem();
+                }
+            }
+        });
 
         // 显示框
         displayBox = new JTextArea();
@@ -114,10 +126,10 @@ public class CalculatorGUI {
 
         public void actionPerformed(ActionEvent event) {
             newEntry = true; // 标记表达式已经计算完成
-
-            if (evaluate.checkInput(input)) { // 表达式合法
+            System.out.println(cnt);
+            if (evaluate.checkInput(input, cnt)) { // 表达式合法
                 button = event.getActionCommand(); // 实际上这里的button一定是 " = "
-                result = evaluate.readInput(input); // result为答案
+                result = evaluate.readInput(input, cnt); // result为答案
                 // 第二行显示框显示标志位
                 // AF, CF, OF, PF, SF, ZF;
                 String flags = "A: " + AF + "    C: " + CF + "    O: " + OF + "    P: " + PF + "    S: " + SF
