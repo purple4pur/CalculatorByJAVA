@@ -9,7 +9,7 @@ public class CalculatorGUI {
     // 按钮
     CreateButton add, sub, and, or, xor, not, comp, clear, one, zero, ans, equals;
     // 显示框
-    JTextField displayBox;
+    JTextArea displayBox;
     private String button = "";
     private String input = "";
     private boolean newEntry = false;
@@ -40,7 +40,7 @@ public class CalculatorGUI {
         choicePane.add(comboBox);
 
         // 显示框
-        displayBox = new JTextField();
+        displayBox = new JTextArea();
         displayBox.setPreferredSize(new Dimension(400, 50));
 
         add = new CreateButton(" + ", new OperationButton(), bottomPane);
