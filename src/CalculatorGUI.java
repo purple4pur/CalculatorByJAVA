@@ -55,11 +55,11 @@ public class CalculatorGUI {
         displayBox = new JTextArea();
         displayBox.setPreferredSize(new Dimension(400, 50));
 
-        add = new CreateButton("+", new OperationButton(), bottomPane);
-        sub = new CreateButton("-", new OperationButton(), bottomPane);
-        and = new CreateButton("&", new OperationButton(), bottomPane);
-        or = new CreateButton("|", new OperationButton(), bottomPane);
-        xor = new CreateButton("^", new OperationButton(), bottomPane);
+        add = new CreateButton(" + ", new OperationButton(), bottomPane);
+        sub = new CreateButton(" - ", new OperationButton(), bottomPane);
+        and = new CreateButton(" & ", new OperationButton(), bottomPane);
+        or = new CreateButton(" | ", new OperationButton(), bottomPane);
+        xor = new CreateButton(" ^ ", new OperationButton(), bottomPane);
         not = new CreateButton("~", new EqualsButton(), bottomPane);  // ~表示求反码
         comp = new CreateButton("#", new EqualsButton(), bottomPane); // # 表示求补码
         clear = new CreateButton("clear", new OperationButton(), bottomPane);
