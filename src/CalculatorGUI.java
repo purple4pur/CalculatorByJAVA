@@ -13,7 +13,7 @@ public class CalculatorGUI {
     private String button = "";
     private String input = "";
     private boolean newEntry = false;
-    private double result;
+    private String result;
     private int AF, CF, OF, PF, SF, ZF; // 状态标志位
     DecimalFormat formater = new DecimalFormat("0.##########");
     private int cnt = 8;  // 字长位数
@@ -109,7 +109,7 @@ public class CalculatorGUI {
             if (button == "ans") {
                 // 这里需要修改把result写成二进制形式
                 displayBox.setText(displayBox.getText() + formater.format(result));
-                input = input + Double.toString(result);
+                input = input + result;
             } else if (button == "clear") {
                 displayBox.setText("");
                 input = "";
@@ -128,13 +128,13 @@ public class CalculatorGUI {
             newEntry = true; // 标记表达式已经计算完成
             // System.out.println(cnt);
             button = event.getActionCommand();  // button可能是=，~,#
-            if (evaluate.checkInput(input, button, cnt)) { // 表达式合法
+            if (true||evaluate.checkInput(input, button, cnt)) { // 表达式合法
                 result = evaluate.readInput(input, button, cnt); // result为答案
                 // 第二行显示框显示标志位
                 // AF, CF, OF, PF, SF, ZF;
                 String flags = "A: " + AF + "    C: " + CF + "    O: " + OF + "    P: " + PF + "    S: " + SF
                         + "    Z: " + ZF;
-                displayBox.setText(displayBox.getText() + button + formater.format(result) + '\n' + flags);
+                displayBox.setText(displayBox.getText() + button + result + '\n' + flags);
                 // 显示框显示：完整表达式=运算结果
             } else
                 displayBox.setText(evaluate.getException()); // 显示框显示错误信息
