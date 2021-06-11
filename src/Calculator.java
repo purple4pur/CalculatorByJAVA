@@ -19,7 +19,6 @@ public class Calculator {
         Scanner reader = new Scanner(in);
         while (reader.hasNext()) {
             token = reader.next();
-
             if (isNumber(token)) {
                 nums[numCount] = token;
                 numCount++;
@@ -38,22 +37,21 @@ public class Calculator {
                 valid = false;
             }
 
-            // button.equals("=")
-        } else {
-            // 直接按 "=" 键
-            if (numCount == 0 && opCount == 0) {
+        } else { // button.equals("=")
+            if (numCount == 0 && opCount == 0) { // 直接按 "=" 键
                 exception = "";
                 valid = false;
+            } else if (numCount == 1 && nums[0].length() == cnt) {
+                exception = "Error: need operator";
+                valid = false;
 
-                // 只有一个数
-            } else if (numCount == 1 && opCount == 0) {
+            } else if (numCount == 1 && opCount == 0) { // 只有一个数
                 if (nums[0].length() != cnt) {
                     exception = "Error: do not match word length";
                     valid = false;
                 }
 
-                // 两个数 + 一个操作符
-            } else if (numCount != 2 || opCount != 1) {
+            } else if (numCount != 2 || opCount != 1) { // 两个数 + 一个操作符
                 exception = "Error: wrong pattern";
                 valid = false;
             } else if (nums[0].length() != cnt || nums[1].length() != cnt) {
