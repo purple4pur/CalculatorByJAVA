@@ -72,6 +72,7 @@ public class CalculatorGUI {
         frame.setSize(new Dimension(400, 286));
         frame.setVisible(true);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
