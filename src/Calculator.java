@@ -1,5 +1,3 @@
-import java.util.Collections;
-import java.util.Stack;
 import java.util.Scanner;
 
 public class Calculator {
@@ -71,8 +69,6 @@ public class Calculator {
     public String readInput(String exp, String button, int cnt) {
         int ans = 0;
         exp = exp.replaceAll(" ", "");
-//        System.out.println(exp);
-        char[] str = exp.toCharArray();
         if (button.equals("~") || button.equals("#")) {
             int x = Integer.parseInt(exp, 2);
             if (button.equals("~")) ans = (~x) & ((1 << cnt) - 1);
@@ -127,18 +123,20 @@ public class Calculator {
                 break;
             }
         }
+        
         if (ans >= (1 << cnt)) {
             OF = "1";
             ans = ans % (1 << cnt);
-        } else OF = "0";
-//        System.out.println(ans);
+        } else {
+            OF = "0";
+        }
+
         String ret = Integer.toString(ans, 2);
         for (int i = ret.length(); i < cnt; i++) ret = "0" + ret;
         if (ans == 0) ZF = "1";
         else ZF = "0";
 
         SF = ret.substring(0, 1);
-//        System.out.println(ret);
         for (int i = ret.length() - 1, tmp = 0; i >= 0; i--) {
             if (ret.charAt(i) == '1') {
                 tmp++;
@@ -174,38 +172,6 @@ public class Calculator {
             return true;
         else
             return false;
-    }
-
-    private static boolean hasPrecedence(String op1, String op2) {
-        if (op2.equals("(") || op2.equals(")"))
-            return false;
-        if ((op1.equals("*") || op1.equals("/")) && (op2.equals("+") || op2.equals("-")))
-            return false;
-        if (op1.equals("^") && (op2.equals("/") || op2.equals("*")))
-            return false;
-        if (op1.equals("^") && (op2.equals("-") || op2.equals("+")))
-            return false;
-        if (op1.equals("sqrt") && (op2.equals("/") || op2.equals("*")))
-            return false;
-        if (op1.equals("sqrt") && (op2.equals("-") || op2.equals("+")))
-            return false;
-        else
-            return true;
-    }
-
-    private static double evaluate(String operation, double num2, double num1) {
-        if (operation.equals("+")) {
-            num1 = num1 + num2;
-        } else if (operation.equals("-")) {
-            num1 = num1 - num2;
-        } else if (operation.equals("*")) {
-            num1 = num1 * num2;
-        } else if (operation.equals("/")) {
-            num1 = num1 / num2;
-        } else if (operation.equals("^")) {
-            num1 = Math.pow(num1, num2);
-        }
-        return num1;
     }
 }
 

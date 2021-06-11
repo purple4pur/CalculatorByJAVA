@@ -3,7 +3,6 @@ import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.*;
-import java.text.DecimalFormat;
 
 public class CalculatorGUI {
     // 按钮
@@ -14,8 +13,6 @@ public class CalculatorGUI {
     private String input = "";
     private boolean newEntry = false;
     private String result;
-    private int AF, CF, OF, PF, SF, ZF; // 状态标志位
-    DecimalFormat formater = new DecimalFormat("0.##########");
     private int cnt = 8;  // 字长位数
 
     public static void main(String[] args) {
@@ -108,7 +105,7 @@ public class CalculatorGUI {
 
             if (button == "ans") {
                 // 这里需要修改把result写成二进制形式
-                displayBox.setText(displayBox.getText() + formater.format(result));
+                displayBox.setText(displayBox.getText() + result);
                 input = input + result;
             } else if (button == "clear") {
                 displayBox.setText("");
@@ -126,16 +123,16 @@ public class CalculatorGUI {
 
         public void actionPerformed(ActionEvent event) {
             newEntry = true; // 标记表达式已经计算完成
-            // System.out.println(cnt);
             button = event.getActionCommand();  // button可能是=，~,#
             if (evaluate.checkInput(input, button, cnt)) { // 表达式合法
-                result = evaluate.readInput(input, button, cnt); // result为答案
-                // 第二行显示框显示标志位
-                // AF, CF, OF, PF, SF, ZF;
-                String flags = "A: " + evaluate.AF + "    C: " + evaluate.CF + "    O: " + evaluate.OF + "    P: " + evaluate.PF + "    S: " + evaluate.SF
-                        + "    Z: " + evaluate.ZF;
-                displayBox.setText(displayBox.getText() + button + result + '\n' + flags);
-                // 显示框显示：完整表达式=运算结果
+                result = evaluate.readInput(input, button, cnt);
+                String flags = "A: " + evaluate.AF + "    C: " + evaluate.CF + "    O: " + evaluate.OF
+                             + "    P: " + evaluate.PF + "    S: " + evaluate.SF + "    Z: " + evaluate.ZF;
+                if (button == "#" || button == "~") {
+                    displayBox.setText(button + " " + displayBox.getText() + " = " + result + '\n' + flags);
+                } else {
+                    displayBox.setText(displayBox.getText() + button + result + '\n' + flags);
+                }
             } else
                 displayBox.setText(evaluate.getException()); // 显示框显示错误信息
         }
