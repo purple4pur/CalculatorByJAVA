@@ -65,13 +65,14 @@ public class CalculatorGUI {
         ans = new CreateButton("ans", new OperationButton(), bottomPane);
         equals = new CreateButton(" = ", new EqualsButton(), bottomPane);
 
-        frame.getContentPane().add(BorderLayout.NORTH, displayBox);
-        frame.getContentPane().add(BorderLayout.CENTER, choicePane);
-        frame.getContentPane().add(BorderLayout.SOUTH, bottomPane);
+        frame.add(displayBox, BorderLayout.NORTH);
+        frame.add(choicePane, BorderLayout.CENTER);
+        frame.add(bottomPane, BorderLayout.SOUTH);
 
         frame.setSize(new Dimension(400, 286));
-        frame.getContentPane().setPreferredSize(new Dimension(400, 250));
         frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
