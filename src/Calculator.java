@@ -1,9 +1,11 @@
+import java.util.Collections;
 import java.util.Stack;
 import java.util.Scanner;
 
 public class Calculator {
     private String token = "";
     private String exception = "";
+    public String AF = "0", CF = "0", OF = "0", PF = "0", SF = "0", ZF = "0";
 
     public String getException() {
         return exception;
@@ -11,10 +13,10 @@ public class Calculator {
 
     // in为输入的表达式，button可能是=,~,#，cnt表示字长位数
     public boolean checkInput(String in, String button, int cnt) {
-        int       opCount  = 0;
-        int       numCount = 0;
-        boolean   valid    = true;
-        String[]  nums     = {"", ""};
+        int opCount = 0;
+        int numCount = 0;
+        boolean valid = true;
+        String[] nums = {"", ""};
 
         Scanner reader = new Scanner(in);
         while (reader.hasNext()) {
@@ -28,7 +30,7 @@ public class Calculator {
             }
         }
         reader.close();
-        
+
         if (button.equals("~") || button.equals("#")) {
             if (numCount != 1 || opCount != 0) {
                 exception = "Error: needs only one binary number";
@@ -38,21 +40,21 @@ public class Calculator {
                 valid = false;
             }
 
-        // button.equals("=")
+            // button.equals("=")
         } else {
             // 直接按 "=" 键
             if (numCount == 0 && opCount == 0) {
                 exception = "";
                 valid = false;
 
-            // 只有一个数
+                // 只有一个数
             } else if (numCount == 1 && opCount == 0) {
                 if (nums[0].length() != cnt) {
                     exception = "Error: do not match word length";
                     valid = false;
                 }
 
-            // 两个数 + 一个操作符
+                // 两个数 + 一个操作符
             } else if (numCount != 2 || opCount != 1) {
                 exception = "Error: wrong pattern";
                 valid = false;
@@ -66,46 +68,72 @@ public class Calculator {
     }
 
     // exp为输入的表达式，button可能是=,~,#，cnt表示字长位数
-    public double readInput(String exp, String button, int cnt) {
-        Scanner input = new Scanner(exp); // 获得需要计算的表达式字符串
-        Stack<Double> num = new Stack<Double>();
-        Stack<String> op = new Stack<String>();
-
-        while (input.hasNext()) {
-            token = input.next();
-            if (isNumber(token)) {
-                num.push(Double.parseDouble(token));
-            } else if (token.equals("(")) {
-                op.push(token);
-            } else if (token.equals(")")) {
-                while (!op.peek().equals("(")) {
-                    if (op.peek().equals("sqrt")) {
-                        num.push(Math.sqrt(num.pop()));
-                        op.pop();
-                    } else
-                        num.push(evaluate(op.pop(), num.pop(), num.pop()));
+    public String readInput(String exp, String button, int cnt) {
+        int ans = 0;
+        exp = exp.replaceAll(" ", "");
+        System.out.println(exp);
+        char[] str = exp.toCharArray();
+        if (button.equals("~") || button.equals("#")) {
+            int x = Integer.parseInt(exp, 2);
+            if (button.equals("~")) ans = (~x) & ((1 << cnt) - 1);
+            else {
+                if ((x >> (cnt - 1) & 1) == 1) {
+                    ans = ((~x) + 1) & ((1 << cnt) - 1);
+                } else ans = x;
+            }
+        } else {
+            int pos = 0;
+            for (int i = 0; i < exp.length(); i++) {
+                if (isOperator(Character.toString(exp.charAt(i)))) {
+                    pos = i;
+                    break;
                 }
-                op.pop();
-            } else {
-                while (!op.empty() && hasPrecedence(token, op.peek())) {
-                    if (op.peek().equals("sqrt")) {
-                        num.push(Math.sqrt(num.pop()));
-                        op.pop();
-                    } else
-                        num.push(evaluate(op.pop(), num.pop(), num.pop()));
+            }
+            int a = Integer.parseInt(exp.substring(0, pos), 2), b = Integer.parseInt(exp.substring(pos + 1), 2);
+            System.out.println(a + ", " + b);
+            char op = exp.charAt(pos);
+            switch (op) {
+                case '+': {
+                    ans = a + b;
                 }
-                op.push(token);
+                break;
+                case '-': {
+                    ans = (1 << cnt) + a - b;
+                }
+                break;
+                case '&': {
+                    ans = a & b;
+                }
+                case '|': {
+                    ans = a | b;
+                }
+                case '^': {
+                    ans = a ^ b;
+                }
+                break;
             }
         }
+        if (ans >= (1 << cnt)) {
+            OF = "1";
+            ans = ans % (1 << cnt);
+        } else OF = "0";
 
-        while (!op.empty()) {
-            if (op.peek().equals("sqrt")) {
-                num.push(Math.sqrt(num.pop()));
-                op.pop();
-            } else
-                num.push(evaluate(op.pop(), num.pop(), num.pop()));
+        String ret = Integer.toString(ans, 2);
+
+        if (ans == 0) ZF = "1";
+        else ZF = "0";
+
+        SF = ret.substring(0, 1);
+
+        for (int i = ret.length() - 1, tmp = 0; i >= ret.length() - 8; i++) {
+            if (ret.charAt(i) == '1') {
+                tmp++;
+                if (tmp % 2 == 0) PF = "1";
+                else PF = "0";
+            }
         }
-        return num.pop();
+        return ret;
+
     }
 
     private static boolean isNumber(String exp) {
@@ -151,18 +179,19 @@ public class Calculator {
             return true;
     }
 
-     private static double evaluate (String operation, double num2, double num1) {
-        if(operation.equals("+")) {
+    private static double evaluate(String operation, double num2, double num1) {
+        if (operation.equals("+")) {
             num1 = num1 + num2;
-        } else if(operation.equals("-")){
+        } else if (operation.equals("-")) {
             num1 = num1 - num2;
-        } else if(operation.equals("*")){
+        } else if (operation.equals("*")) {
             num1 = num1 * num2;
-        } else if(operation.equals("/")){
+        } else if (operation.equals("/")) {
             num1 = num1 / num2;
-        } else if(operation.equals("^")){
+        } else if (operation.equals("^")) {
             num1 = Math.pow(num1, num2);
-        } return num1;
+        }
+        return num1;
     }
 }
 
