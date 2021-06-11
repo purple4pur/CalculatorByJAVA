@@ -128,12 +128,12 @@ public class CalculatorGUI {
             newEntry = true; // 标记表达式已经计算完成
             // System.out.println(cnt);
             button = event.getActionCommand();  // button可能是=，~,#
-            if (true||evaluate.checkInput(input, button, cnt)) { // 表达式合法
+            if (evaluate.checkInput(input, button, cnt)) { // 表达式合法
                 result = evaluate.readInput(input, button, cnt); // result为答案
                 // 第二行显示框显示标志位
                 // AF, CF, OF, PF, SF, ZF;
-                String flags = "A: " + AF + "    C: " + CF + "    O: " + OF + "    P: " + PF + "    S: " + SF
-                        + "    Z: " + ZF;
+                String flags = "A: " + evaluate.AF + "    C: " + evaluate.CF + "    O: " + evaluate.OF + "    P: " + evaluate.PF + "    S: " + evaluate.SF
+                        + "    Z: " + evaluate.ZF;
                 displayBox.setText(displayBox.getText() + button + result + '\n' + flags);
                 // 显示框显示：完整表达式=运算结果
             } else

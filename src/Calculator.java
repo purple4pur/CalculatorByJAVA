@@ -71,7 +71,7 @@ public class Calculator {
     public String readInput(String exp, String button, int cnt) {
         int ans = 0;
         exp = exp.replaceAll(" ", "");
-        System.out.println(exp);
+//        System.out.println(exp);
         char[] str = exp.toCharArray();
         if (button.equals("~") || button.equals("#")) {
             int x = Integer.parseInt(exp, 2);
@@ -90,23 +90,37 @@ public class Calculator {
                 }
             }
             int a = Integer.parseInt(exp.substring(0, pos), 2), b = Integer.parseInt(exp.substring(pos + 1), 2);
-            System.out.println(a + ", " + b);
+//            System.out.println(a + ", " + b);
             char op = exp.charAt(pos);
             switch (op) {
                 case '+': {
                     ans = a + b;
+                    if (((a >> (cnt - 1)) & 1) == ((b >> (cnt - 1)) & 1) && ((a >> (cnt - 1)) & 1) != ((ans >> (cnt - 1)) & 1))
+                        CF = "1";
+                    else CF = "0";
+                    if (((a >> (cnt - 1)) & 1) == ((b >> (cnt - 1)) & 1) && ((a >> (cnt - 1)) & 1) != ((ans >> (cnt - 1)) & 1))
+                        AF = "1";
+                    else AF = "0";
+
                 }
                 break;
                 case '-': {
                     ans = (1 << cnt) + a - b;
+                    if (((a >> (cnt - 1)) & 1) == ((b >> (cnt - 1)) & 1) && ((a >> (cnt - 1)) & 1) != ((ans >> (cnt - 1)) & 1))
+                        CF = "1";
+                    else CF = "0";
+                    if (((a >> 3) & 1) == ((b >> 3) & 1) && ((a >> 3) & 1) != ((ans >> 3) & 1)) AF = "1";
+                    else AF = "0";
                 }
                 break;
                 case '&': {
                     ans = a & b;
                 }
+                break;
                 case '|': {
                     ans = a | b;
                 }
+                break;
                 case '^': {
                     ans = a ^ b;
                 }
@@ -117,15 +131,15 @@ public class Calculator {
             OF = "1";
             ans = ans % (1 << cnt);
         } else OF = "0";
-
+//        System.out.println(ans);
         String ret = Integer.toString(ans, 2);
-
+        for (int i = ret.length(); i < cnt; i++) ret = "0" + ret;
         if (ans == 0) ZF = "1";
         else ZF = "0";
 
         SF = ret.substring(0, 1);
-
-        for (int i = ret.length() - 1, tmp = 0; i >= ret.length() - 8; i++) {
+//        System.out.println(ret);
+        for (int i = ret.length() - 1, tmp = 0; i >= 0; i--) {
             if (ret.charAt(i) == '1') {
                 tmp++;
                 if (tmp % 2 == 0) PF = "1";
